@@ -1,89 +1,123 @@
-﻿# Driver Drowsiness Detection System
+# Driver Drowsiness Detection System
 
-A real-time driver drowsiness detection system using computer vision and deep learning. The system monitors driver's eyes and mouth to detect signs of drowsiness and fatigue, providing timely alerts to prevent accidents.
+Real-time drowsiness detection using a laptop webcam — no special hardware required. Detects eye closure and yawning, triggers audio/SMS alerts, and generates AI-powered post-trip safety reports.
 
-## Dataset
-[Kaggle Drowsiness Dataset](https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset)
+Built during internship at **Future Kmuniti Pvt. Ltd., Jaipur** (Jan–Apr 2026) under Mr. Abhishek Maher (CTO).
+
+---
 
 ## Features
 
-- Real-time face detection and landmark tracking using MediaPipe
-- Eye state classification (Open/Closed) using CNN
-- Yawn detection
-- Eye Aspect Ratio (EAR) monitoring
-- Mouth Aspect Ratio (MAR) monitoring
-- Audio alerts for drowsiness detection
-- Streamlit web interface with live monitoring
-- Trip reports with statistics and AI-powered insights
-- Data visualization of drowsiness patterns
-- Export functionality for trip data (CSV & JSON)
+- Real-time face landmark detection via MediaPipe FaceMesh (468 points)
+- EAR (Eye Aspect Ratio) + MAR (Mouth Aspect Ratio) based drowsiness logic
+- CNN model (TensorFlow/Keras) for eye/mouth state classification
+- Audio alarm on drowsiness detection
+- Auto SMS alert to emergency contact via Twilio (max once per 5 min)
+- Real-time safety tips sidebar on dashboard
+- Post-trip report with drowsy episodes, avg EAR/MAR, session duration
+- AI feedback via Meta Llama 3.1 8B (Groq API) — personalized safety coaching
+- Export report as CSV or JSON
 
-## Installation
+---
 
-1. Clone the repository:
+## Tech Stack
+
+| Component | Tool |
+|---|---|
+| Language | Python |
+| Face landmarks | MediaPipe FaceMesh |
+| Video capture | OpenCV |
+| AI classification | CNN (TensorFlow/Keras) |
+| Dashboard | Streamlit |
+| SMS alerts | Twilio API |
+| AI feedback | Meta Llama 3.1 8B via Groq API |
+| Export | CSV, JSON |
+
+---
+
+## Setup
+
+### 1. Clone the repo
+
 ```bash
-git clone https://github.com/SANKETSINGH6555/Driver-Drowsiness-Detection.git
-cd Driver-Drowsiness-Detection
+git clone https://github.com/saurav-jorwal/drowsiness-detection.git
+cd drowsiness-detection
 ```
 
-2. Install dependencies:
+### 2. Create virtual environment
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+source .venv/bin/activate     # Mac/Linux
+```
+
+### 3. Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. (Optional) For AI insights, create a `.env` file and add your Google API key:
+### 4. Download the model
+
+The CNN model file (`drowiness_new7.h5`) is not included in the repo due to size.  
+Download it from: **[HuggingFace / Google Drive link here]**  
+Place it in the root project directory.
+
+### 5. Configure secrets
+
+Create a `.env` file in the root directory (use `.env.example` as template):
+
 ```
-GOOGLE_API_KEY=your_api_key_here
+TWILIO_ACCOUNT_SID=your_sid
+TWILIO_AUTH_TOKEN=your_token
+TWILIO_FROM_NUMBER=+1xxxxxxxxxx
+EMERGENCY_CONTACT=+91xxxxxxxxxx
+GROQ_API_KEY=your_key
 ```
 
-## Usage
+### 6. Run
 
-1. Start the application:
 ```bash
 streamlit run app.py
 ```
 
-2. Use the web interface to:
-   - Start/Stop trip monitoring
-   - View real-time drowsiness detection
-   - Generate trip reports
-   - Download trip data
+---
 
-## Model Architecture
+## How It Works
 
-The system uses a CNN model trained on a custom dataset to classify:
-- Eye states (Open/Closed)
-- Yawn detection
-- Face landmark detection using MediaPipe
+1. Webcam captures face at ~25–30 FPS
+2. MediaPipe maps 468 facial landmarks per frame
+3. EAR calculated — if below 0.22 for 10+ consecutive frames → drowsy
+4. MAR calculated — if above 0.90 for 3+ yawns → drowsy
+5. CNN model confirms eye/mouth state (Open / Closed / Yawn / No Yawn)
+6. On drowsiness: alarm plays, SMS sent, safety tips shown
+7. Post-trip: report generated → sent to Llama 3.1 for AI coaching feedback
+
+---
 
 ## Project Structure
 
 ```
-|── drowsiness_new7.h5      # Trained CNN-model
-|── driver-drowsiness_notebook.ipynb
-├── app.py                  # Streamlit web application
-├── detect_drowsiness.py    # Core detection logic
-├── requirements.txt        # Project dependencies
-├── assets/                 # Sound alerts and cascades
-├── dataset/                # Contains the dataset 
-└── reports/               # Generated trip reports
+drowsiness-detection/
+├── app.py                  # Main Streamlit app
+├── drowiness_new7.h5       # CNN model (download separately)
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
-## Technical Details
+---
 
-- **Eye Aspect Ratio (EAR)**: Measures eye openness
-- **Mouth Aspect Ratio (MAR)**: Detects yawning
-- **Alert Conditions**:
-  - Consecutive frames of closed eyes
-  - Frequent yawning patterns
-  - Combined drowsiness indicators
+## Note
 
-## Contributing
+This app requires a physical webcam and must be run locally. It cannot be fully hosted on cloud platforms due to webcam dependency.
 
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Submit a pull request
+---
 
+## Acknowledgements
 
-
+- Base drowsiness detection logic inspired by open-source community work
+- Extended with: Twilio SMS alerts, safety sidebar UI, and Llama 3.1 AI feedback
+- Internship project — Future Kmuniti Pvt. Ltd., Jaipur
