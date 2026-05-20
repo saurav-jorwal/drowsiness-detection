@@ -2,8 +2,6 @@
 
 Real-time drowsiness detection using a laptop webcam — no special hardware required. Detects eye closure and yawning, triggers audio/SMS alerts, and generates AI-powered post-trip safety reports.
 
-Built during internship at **Future Kmuniti Pvt. Ltd., Jaipur** (Jan–Apr 2026) under Mr. Abhishek Maher (CTO).
-
 ---
 
 ## Features
@@ -58,11 +56,9 @@ source .venv/bin/activate     # Mac/Linux
 pip install -r requirements.txt
 ```
 
-### 4. Download the model
+### 4. Dataset
 
-The CNN model file (`drowiness_new7.h5`) is not included in the repo due to size.  
-Download it from: **[HuggingFace / Google Drive link here]**  
-Place it in the root project directory.
+[Kaggle Drowsiness Dataset](https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset)
 
 ### 5. Configure secrets
 
@@ -73,7 +69,7 @@ TWILIO_ACCOUNT_SID=your_sid
 TWILIO_AUTH_TOKEN=your_token
 TWILIO_FROM_NUMBER=+1xxxxxxxxxx
 EMERGENCY_CONTACT=+91xxxxxxxxxx
-GROQ_API_KEY=your_key
+NVIDIA_API_KEY=your_key
 ```
 
 ### 6. Run
@@ -110,14 +106,25 @@ drowsiness-detection/
 
 ---
 
-## Note
+## Future Improvements
 
-This app requires a physical webcam and must be run locally. It cannot be fully hosted on cloud platforms due to webcam dependency.
+- Mobile app support (Android/iOS camera integration)
+- Cloud dashboard for fleet managers to monitor multiple drivers
+- Hardware integration (Raspberry Pi for in-vehicle deployment)
+- Night vision / low-light detection support
+- Head pose estimation (nodding detection)
+- Fatigue scoring over multi-day patterns
+- Offline mode (remove cloud API dependencies)
 
 ---
 
-## Acknowledgements
+## Author
 
-- Base drowsiness detection logic inspired by open-source community work
-- Extended with: Twilio SMS alerts, safety sidebar UI, and Llama 3.1 AI feedback
-- Internship project — Future Kmuniti Pvt. Ltd., Jaipur
+**Saurav Kumar Meena**
+B.Tech CSE – RTU Kota
+
+LinkedIn
+https://linkedin.com/in/saurav-kumar-meena-b633b83b5/
+
+GitHub
+https://github.com/saurav-jorwal
